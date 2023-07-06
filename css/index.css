@@ -1,0 +1,109 @@
+/* Box sizing rules start */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+/* Box sizing rules end */
+
+body {
+    margin: 0 auto;
+    font-family: "Microsoft YaHei";
+}
+
+.container {
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+}
+
+.row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.row > div {
+    width: 48%;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.row > div > textarea {
+    width: 100%;
+    height: 300px;
+}
+
+.flex-center {
+    width: 13%;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+footer {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* 超小屏设备 */
+@media (max-width:575px) {
+    .container {
+        width: 95vw;
+    }
+    .row > div {
+        width: 100%;
+    }
+    .flex-center {
+        width: 50%;
+    }
+}
+
+/* 小屏设备 */
+@media (min-width:576px) and (max-width:767px) {
+    .container {
+        width: 576px;
+    }
+    .row > div {
+        width: 100%;
+    }
+    .flex-center {
+        width: 50%;
+    }
+}
+
+/* 平板等中等设备 */
+@media (min-width:768px) and (max-width:991px) {
+    .container {
+        width: 768px;
+    }
+    .row > div {
+        width: 100%;
+    }
+    .flex-center {
+        width: 50%;
+    }
+}
+
+/* 普通PC显示器 */
+@media (min-width:992px) and (max-width:1199px) {
+    .container {
+        width: 992px;
+    }
+}
+
+/* 宽屏设备 */
+@media (min-width:1200px) and (max-width:1399px) {
+    .container {
+        width: 1200px;
+    }
+}
+
+/* 超宽屏设备 */
+@media (min-width:1400px) {
+    .container {
+        width: 1400px;
+    }
+}
