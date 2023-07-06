@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RSA非对称加密</title>
+    <script type="text/javascript" src="js/jsencrypt.min.js"></script>
+    <style>
+        body {
+            width: 80%;
+            margin: 0 auto;
+            font-family: "Microsoft YaHei";
+        }
+
+        header {
+            text-align: center;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .row>div {
+            width: 48%;
+            text-align: center;
+        }
+
+        .row>div>textarea {
+            width: 100%;
+            height: 300px;
+        }
+
+        .flex-center {
+            width: 10%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        footer{
+            display: flex;
+            justify-content: space-between;
+        }
+        
+    </style>
+</head>
+
+<body>
+    <header>
+        <h2>RSA非对称加密</h2>
+    </header>
+    <main>
+        <div class="row">
+            <div>
+                <h4>公钥</h4>
+                <textarea name="publicKey" id="publicKey" placeholder="请输入公钥"></textarea>
+            </div>
+            <div>
+                <h4>私钥</h4>
+                <textarea name="privateKey" id="privateKey" placeholder="请输入私钥"></textarea>
+            </div>
+        </div>
+        <div class="flex-center">
+            <select name="keySize" id="keySize">
+                <option value="2048">2048 bit</option>
+                <option value="4096">4096 bit</option>
+            </select>
+            <button onclick="generateKey(this)">生成密钥</button>
+        </div>
+        <div class="row">
+            <div>
+                <h4>原文</h4>
+                <textarea name="publicKey" id="originalText" placeholder="请输入原文"></textarea>
+            </div>
+            <div>
+                <h4>密文</h4>
+                <textarea name="publicKey" id="cipherText" placeholder="请输入密文"></textarea>
+            </div>
+        </div>
+        <div class="flex-center">
+            <button onclick="encrypt()">公钥加密</button>
+            <button onclick="decrypt()">私钥解密</button>
+        </div>
+    </main>
+    <footer>
+        <p>
+            <strong>甲乙双方加密通信流程</strong> <br>
+            1. 甲乙双方生成各自的公私密钥对，将私钥妥善保存，至少选择2048位密钥，可选4096位密钥，密钥生成速度取决于CPU运算速度，位数越大，耗时越长 <br>
+            2. 甲乙双方将各自的公钥交换 <br>
+            3. 甲方发消息给乙方：甲方使用乙方提供的公钥加密通信内容，然后将密文发送给乙方，乙方使用自己的私钥解密密文得到原文 <br>
+            4. 乙方发消息给甲方：乙方使用甲方提供的公钥加密通信内容，然后将密文发送给甲方，甲方使用自己的私钥解密密文得到原文
+        </p>
+    </footer>
+    <script type="text/javascript">
+        // 生成公私密钥对
+        function generateKey(btn) {
+            if (btn) {
+                btn.stopPropatation = true;
+                btn.cancelBubble = true;
+            }
+            let keySize = parseInt(document.getElementById('keySize').value);
+            let crypt = new JSEncrypt({
+                default_key_size: keySize
+            });
+            btn && (btn.innerText = '正在生成...');
+            new Promise(function (resolve) {
+                setTimeout(function () {
+                    resolve([crypt.getPublicKey(), crypt.getPrivateKey()]);
+                }, 50);
+            }
+            ).then(function (e) {
+                document.getElementById('publicKey').value = e[0];
+                document.getElementById('privateKey').value = e[1];
+                btn && (btn.innerText = '生成密钥');
+            });
+        }
+        // 公钥加密
+        function encrypt() {
+            let cipherText = '';
+            let originalText = document.getElementById('originalText').value;
+            let publicKey = document.getElementById('publicKey').value;
+            if (originalText && publicKey) {
+                let crypt = new JSEncrypt();
+                crypt.setPublicKey(publicKey);
+                cipherText = crypt.encrypt(originalText) || ''
+            }
+            document.getElementById('cipherText').value = cipherText
+        }
+        // 私钥解密
+        function decrypt() {
+            let originalText = '';
+            let cipherText = document.getElementById('cipherText').value;
+            let privateKey = document.getElementById('privateKey').value;
+            if (cipherText) {
+                let crypt = new JSEncrypt();
+                crypt.setPrivateKey(privateKey);
+                originalText = crypt.decrypt(cipherText) || ''
+            }
+            document.getElementById('originalText').value = originalText
+        }
+    </script>
+</body>
+
+</html>
