@@ -57,7 +57,7 @@
     </main>
     <script type="text/javascript">
         // 生成公私密钥对
-        function generateKey(btn) {
+        async function generateKey(btn) {
             if (btn) {
                 btn.stopPropatation = true;
                 btn.cancelBubble = true;
@@ -71,15 +71,14 @@
                 setTimeout(function () {
                     resolve([crypt.getPublicKey(), crypt.getPrivateKey()]);
                 }, 50);
-            }
-            ).then(function (e) {
+            }).then(function (e) {
                 document.getElementById('publicKey').value = e[0];
                 document.getElementById('privateKey').value = e[1];
                 btn && (btn.innerText = '生成密钥');
             });
         }
         // 公钥加密
-        function encrypt() {
+        async function encrypt() {
             let cipherText = '';
             let originalText = document.getElementById('originalText').value;
             let publicKey = document.getElementById('publicKey').value;
@@ -91,7 +90,7 @@
             document.getElementById('cipherText').value = cipherText
         }
         // 私钥解密
-        function decrypt() {
+        async function decrypt() {
             let originalText = '';
             let cipherText = document.getElementById('cipherText').value;
             let privateKey = document.getElementById('privateKey').value;
